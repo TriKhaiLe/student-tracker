@@ -1,16 +1,24 @@
+def get_numeric_input(prompt, target_type=int):
+    while True:
+        try:
+            return target_type(input(prompt))
+        except ValueError:
+            print("Loi: Vui long nhap dung dinh dang so! Thu lai.")
+
+
 def input_students():
     student_list = []
     
     print("Nhap so luong hoc sinh:")
-    N = int(input())
+    N = get_numeric_input("So luong hoc sinh: ", int)
     
     for i in range(N):
         print(f"Nhap thong tin hoc sinh thu {i + 1}:")
         name = input("Ten: ")
-        age = int(input("Tuoi: "))
-        math = float(input("Diem Toan: "))
-        literature = float(input("Diem Van: "))
-        english = float(input("Diem Anh: "))
+        age = get_numeric_input("Tuoi: ", int)
+        math = get_numeric_input("Diem Toan: ", float)
+        literature = get_numeric_input("Diem Van: ", float)
+        english = get_numeric_input("Diem Anh: ", float)
 
         student = {
             "name": name,
