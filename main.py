@@ -16,7 +16,7 @@ def get_numeric_input(prompt, target_type=int):
         try:
             return target_type(input(prompt))
         except ValueError:
-            print("Loi: Vui long nhap dung dinh dang so! Thu lai.")
+            print("Loi: Vui long nhap dung dinh dang so! Hay thu lai.")
 
 
 def input_students():
@@ -51,11 +51,25 @@ def display_students(student_list):
     for student in student_list:
         print(f"Ten: {student['name']}, Tuoi: {student['age']}, Diem Toan: {student['math']}, Diem Van: {student['literature']}, Diem Anh: {student['english']}, Diem trung binh: {student['average']:.2f}, Xep loai: {student['grade']}")
 
+def search_student(student_list, search_query):
+    search_results = []
+    for student in student_list:
+        if search_query.lower() in student['name'].lower():
+            search_results.append(student)
+    if search_results:
+        display_students(search_results)
+    else:
+        print("Khong tim thay hoc sinh nay")
+
 def main():
     print("Chao mung den voi he thong Quan ly hoc sinh!")
 
     students = input_students()
     display_students(students)
+
+    print("\n--- TIM KIEM ---")
+    search_query = input("Nhap ten hoc sinh can tim: ")
+    search_student(students, search_query)
 
 if __name__ == "__main__":
     main()
