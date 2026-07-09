@@ -11,13 +11,20 @@ def classify_grade(average):
     else:
         return "Yeu"
     
+def get_text_input(prompt):
+    while True:
+        text_value = input(prompt)
+        if not text_value:
+            print("Loi: Gia tri khong hop le! Hay thu lai.")
+        else:
+            return text_value
+
 def get_numeric_input(prompt, target_type=int):
     while True:
         try:
             return target_type(input(prompt))
         except ValueError:
             print("Loi: Vui long nhap dung dinh dang so! Hay thu lai.")
-
 
 def input_students():
     student_list = []
@@ -27,7 +34,7 @@ def input_students():
     
     for i in range(N):
         print(f"Nhap thong tin hoc sinh thu {i + 1}:")
-        name = input("Ten: ")
+        name = get_text_input("Ten: ")
         age = get_numeric_input("Tuoi: ", int)
         math = get_numeric_input("Diem Toan: ", float)
         literature = get_numeric_input("Diem Van: ", float)
@@ -68,7 +75,7 @@ def main():
     display_students(students)
 
     print("\n--- TIM KIEM ---")
-    search_query = input("Nhap ten hoc sinh can tim: ")
+    search_query = get_text_input("Nhap ten hoc sinh can tim: ")
     search_student(students, search_query)
 
 if __name__ == "__main__":
