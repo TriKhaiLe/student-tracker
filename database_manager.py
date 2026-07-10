@@ -28,6 +28,10 @@ class DatabaseManager:
                             (student.name, student.age, student.math, student.literature, student.english, student.average, student.rank))
         self.conn.commit()
 
+    def delete_student(self, student_id):
+        self.cursor.execute("DELETE FROM students WHERE id=?", (student_id,))
+        self.conn.commit()
+        
     def get_all_students(self):
         students = []
 

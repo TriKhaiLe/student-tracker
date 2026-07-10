@@ -158,8 +158,9 @@ def setup_gui(db):
 
     tk.Button(root, text="Thêm", command=on_add_click).pack()
 
-    columns = ("name", "age", "math", "literature", "english", "average", "rank")
+    columns = ("id", "name", "age", "math", "literature", "english", "average", "rank")
     tree = ttk.Treeview(root, columns=columns, show="headings")
+    tree.heading("id", text="ID", anchor="center")
     tree.heading("name", text="Tên", anchor="center")
     tree.heading("age", text="Tuổi", anchor="center")
     tree.heading("math", text="Điểm Toán", anchor="center")
@@ -168,6 +169,7 @@ def setup_gui(db):
     tree.heading("average", text="Điểm TB", anchor="center")
     tree.heading("rank", text="Xếp loại", anchor="center")
 
+    tree.column("id", width=50, anchor="center")
     tree.column("name", width=150, anchor="center")
     tree.column("age", width=50, anchor="center")
     tree.column("math", width=100, anchor="center")
@@ -178,13 +180,25 @@ def setup_gui(db):
     tree.pack(fill="both", expand=True, padx=10, pady=10)
     refresh_treeview(tree, db)
 
+    tk.Button(root, text="Xóa Học Sinh", command=lambda: delete_student(tree, db)).pack(pady=5)
+
     root.mainloop()
+
+def delete_student(tree, db):
+    selected_item = tree.selection()
+    if not selected_item:
+        messagebox.showwarning("Warning", "Vui lòng chọn học sinh để xóa.")
+        return
+
+    student_id = tree.item(selected_item)["values"][0]
+    db.delete_student(student_id)
+    refresh_treeview(tree, db)
 
 def refresh_treeview(tree, db):
     for row in tree.get_children():
         tree.delete(row)
     for student in db.get_all_students():
-        tree.insert("", "end", values=(student.name, student.age, student.math, student.literature, student.english, student.average, student.rank))
+        tree.insert("", "end", values=(student.id, student.name, student.age, student.math, student.literature, student.english, student.average, student.rank))
 
 def main():
     db = DatabaseManager()

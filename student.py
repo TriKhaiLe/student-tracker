@@ -1,6 +1,6 @@
 class Student:
     def __init__(self, name, age, math, literature, english, student_id=None, average=None, rank=None):
-        self.Id = student_id
+        self.id = student_id
         self.name = name
         self.age = age
         self.math = float(math)
