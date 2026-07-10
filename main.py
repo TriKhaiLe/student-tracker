@@ -1,3 +1,5 @@
+import uuid
+
 def calculate_average(math, literature, english):
     return (math + literature + english) / 3
 
@@ -41,6 +43,7 @@ def input_students():
         english = get_numeric_input("Diem Anh: ", float)
 
         student = {
+            "id": str(uuid.uuid4())[:8],
             "name": name,
             "age": age,
             "math": math,
@@ -56,7 +59,7 @@ def input_students():
 def display_students(student_list):
     print("\nDanh sach hoc sinh:")
     for student in student_list:
-        print(f"Ten: {student['name']}, Tuoi: {student['age']}, Diem Toan: {student['math']}, Diem Van: {student['literature']}, Diem Anh: {student['english']}, Diem trung binh: {student['average']:.2f}, Xep loai: {student['grade']}")
+        print(f"Id: {student['id']}, Ten: {student['name']}, Tuoi: {student['age']}, Diem Toan: {student['math']}, Diem Van: {student['literature']}, Diem Anh: {student['english']}, Diem trung binh: {student['average']:.2f}, Xep loai: {student['grade']}")
 
 def search_student(student_list, search_query):
     search_results = []
@@ -70,13 +73,36 @@ def search_student(student_list, search_query):
 
 def main():
     print("Chao mung den voi he thong Quan ly hoc sinh!")
+    while True:
+        print("1. Them hoc sinh")
+        print("2. Hien thi danh sach")
+        print("3. Tim kiem")
+        print("4. Sua thong tin")
+        print("5. Xoa hoc sinh")
+        print("6. Thoat")
 
-    students = input_students()
-    display_students(students)
+        choice = get_numeric_input("Chon chuc nang (1-6): ", int)
 
-    print("\n--- TIM KIEM ---")
-    search_query = get_text_input("Nhap ten hoc sinh can tim: ")
-    search_student(students, search_query)
+        match choice:
+            case 1:
+                students = input_students()
+            case 2:
+                display_students(students)
+            case 3:
+                print("\n--- TIM KIEM ---")
+                search_query = get_text_input("Nhap ten hoc sinh can tim: ")
+                search_student(students, search_query)
+            case 4:
+                print("\n--- SUA THONG TIN ---")
+
+            case 5:
+                print("\n--- XOA HOC SINH ---")
+
+            case 6:
+                print("Cam on ban da su dung he thong!")
+                break
+            case _:
+                print("Lua chon khong hop le! Vui long chon lai.")
 
 if __name__ == "__main__":
     main()
