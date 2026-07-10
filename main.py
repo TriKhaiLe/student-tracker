@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import uuid
 
+from database_manager import DatabaseManager
+from student import Student
+
 def calculate_average(math, literature, english):
     return (math + literature + english) / 3
 
@@ -106,7 +109,7 @@ def use_terminal():
             case _:
                 print("Lua chon khong hop le! Vui long chon lai.")
 
-def setup_gui():
+def setup_gui(db):
     root = tk.Tk()
     root.title("Student Tracker")
     root.geometry("1000x600")
@@ -139,35 +142,50 @@ def setup_gui():
         english = english_entry.get()
         print(f"Adding {name} (Age: {age}, Math: {math}, Literature: {literature}, English: {english})")
 
+        student = Student(name=name, age=int(age), math=float(math), literature=float(literature), english=float(english))
+        db.add_student(student)
+
         name_entry.delete(0, tk.END)
         age_entry.delete(0, tk.END)
         math_entry.delete(0, tk.END)
         literature_entry.delete(0, tk.END)
         english_entry.delete(0, tk.END)
+        refresh_treeview(tree, db)
 
     tk.Button(root, text="Thêm", command=on_add_click).pack()
 
-    columns = ("name", "age", "math", "literature", "english", "average")
+    columns = ("name", "age", "math", "literature", "english", "average", "rank")
     tree = ttk.Treeview(root, columns=columns, show="headings")
-    tree.heading("name", text="Tên")
-    tree.heading("age", text="Tuổi")
-    tree.heading("math", text="Điểm Toán")
-    tree.heading("literature", text="Điểm Văn")
-    tree.heading("english", text="Điểm Anh")
-    tree.heading("average", text="Điểm TB")
+    tree.heading("name", text="Tên", anchor="center")
+    tree.heading("age", text="Tuổi", anchor="center")
+    tree.heading("math", text="Điểm Toán", anchor="center")
+    tree.heading("literature", text="Điểm Văn", anchor="center")
+    tree.heading("english", text="Điểm Anh", anchor="center")
+    tree.heading("average", text="Điểm TB", anchor="center")
+    tree.heading("rank", text="Xếp loại", anchor="center")
 
-    tree.column("name", width=150)
-    tree.column("age", width=50)
-    tree.column("math", width=100)
-    tree.column("literature", width=100)
-    tree.column("english", width=100)
-    tree.column("average", width=100)
+    tree.column("name", width=150, anchor="center")
+    tree.column("age", width=50, anchor="center")
+    tree.column("math", width=100, anchor="center")
+    tree.column("literature", width=100, anchor="center")
+    tree.column("english", width=100, anchor="center")
+    tree.column("average", width=100, anchor="center")
+    tree.column("rank", width=100, anchor="center")
     tree.pack(fill="both", expand=True, padx=10, pady=10)
-    
+    refresh_treeview(tree, db)
+
     root.mainloop()
 
+def refresh_treeview(tree, db):
+    for row in tree.get_children():
+        tree.delete(row)
+    for student in db.get_all_students():
+        tree.insert("", "end", values=(student.name, student.age, student.math, student.literature, student.english, student.average, student.rank))
+
 def main():
-    setup_gui()
+    db = DatabaseManager()
+    setup_gui(db)
+    # use_terminal()
 
 if __name__ == "__main__":
     main()

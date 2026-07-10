@@ -1,13 +1,13 @@
 class Student:
-    def __init__(self, name, age, math, literature, english):
-        self.Id = None 
+    def __init__(self, name, age, math, literature, english, student_id=None, average=None, rank=None):
+        self.Id = student_id
         self.name = name
         self.age = age
         self.math = float(math)
         self.literature = float(literature)
         self.english = float(english)
-        self.average = self.calculate_average()
-        self.rank = self.classify_grade()
+        self.average = average if average is not None else self.calculate_average()
+        self.rank = rank if rank is not None else self.classify_grade()
 
     def calculate_average(self):
         return (self.math + self.literature + self.english) / 3
