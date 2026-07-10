@@ -203,7 +203,7 @@ def refresh_treeview(tree, db):
 def main():
     db = DatabaseManager()
     setup_gui(db)
-    # use_terminal()
+    use_terminal()
 
 if __name__ == "__main__":
     main()
