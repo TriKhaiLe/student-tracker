@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import ttk
 import uuid
 
 def calculate_average(math, literature, english):
@@ -71,7 +73,7 @@ def search_student(student_list, search_query):
     else:
         print("Khong tim thay hoc sinh nay")
 
-def main():
+def use_terminal():
     print("Chao mung den voi he thong Quan ly hoc sinh!")
     while True:
         print("1. Them hoc sinh")
@@ -103,6 +105,69 @@ def main():
                 break
             case _:
                 print("Lua chon khong hop le! Vui long chon lai.")
+
+def setup_gui():
+    root = tk.Tk()
+    root.title("Student Tracker")
+    root.geometry("1000x600")
+
+    tk.Label(root, text="Tên Học Sinh:").pack()
+    name_entry = tk.Entry(root)
+    name_entry.pack()
+
+    tk.Label(root, text="Tuổi:").pack()
+    age_entry = tk.Entry(root)
+    age_entry.pack()
+
+    tk.Label(root, text="Điểm Toán:").pack()
+    math_entry = tk.Entry(root)
+    math_entry.pack()
+
+    tk.Label(root, text="Điểm Văn:").pack()
+    literature_entry = tk.Entry(root)
+    literature_entry.pack()
+
+    tk.Label(root, text="Điểm Anh:").pack()
+    english_entry = tk.Entry(root)
+    english_entry.pack()
+
+    def on_add_click():
+        name = name_entry.get()
+        age = age_entry.get()
+        math = math_entry.get()
+        literature = literature_entry.get()
+        english = english_entry.get()
+        print(f"Adding {name} (Age: {age}, Math: {math}, Literature: {literature}, English: {english})")
+
+        name_entry.delete(0, tk.END)
+        age_entry.delete(0, tk.END)
+        math_entry.delete(0, tk.END)
+        literature_entry.delete(0, tk.END)
+        english_entry.delete(0, tk.END)
+
+    tk.Button(root, text="Thêm", command=on_add_click).pack()
+
+    columns = ("name", "age", "math", "literature", "english", "average")
+    tree = ttk.Treeview(root, columns=columns, show="headings")
+    tree.heading("name", text="Tên")
+    tree.heading("age", text="Tuổi")
+    tree.heading("math", text="Điểm Toán")
+    tree.heading("literature", text="Điểm Văn")
+    tree.heading("english", text="Điểm Anh")
+    tree.heading("average", text="Điểm TB")
+
+    tree.column("name", width=150)
+    tree.column("age", width=50)
+    tree.column("math", width=100)
+    tree.column("literature", width=100)
+    tree.column("english", width=100)
+    tree.column("average", width=100)
+    tree.pack(fill="both", expand=True, padx=10, pady=10)
+    
+    root.mainloop()
+
+def main():
+    setup_gui()
 
 if __name__ == "__main__":
     main()
