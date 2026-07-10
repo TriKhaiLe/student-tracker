@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import uuid
 
 from database_manager import DatabaseManager
@@ -135,22 +136,25 @@ def setup_gui(db):
     english_entry.pack()
 
     def on_add_click():
-        name = name_entry.get()
-        age = age_entry.get()
-        math = math_entry.get()
-        literature = literature_entry.get()
-        english = english_entry.get()
-        print(f"Adding {name} (Age: {age}, Math: {math}, Literature: {literature}, English: {english})")
+        try:
+            name = name_entry.get()
+            age = age_entry.get()
+            math = math_entry.get()
+            literature = literature_entry.get()
+            english = english_entry.get()
+            print(f"Adding {name} (Age: {age}, Math: {math}, Literature: {literature}, English: {english})")
 
-        student = Student(name=name, age=int(age), math=float(math), literature=float(literature), english=float(english))
-        db.add_student(student)
+            student = Student(name=name, age=int(age), math=float(math), literature=float(literature), english=float(english))
+            db.add_student(student)
 
-        name_entry.delete(0, tk.END)
-        age_entry.delete(0, tk.END)
-        math_entry.delete(0, tk.END)
-        literature_entry.delete(0, tk.END)
-        english_entry.delete(0, tk.END)
-        refresh_treeview(tree, db)
+            name_entry.delete(0, tk.END)
+            age_entry.delete(0, tk.END)
+            math_entry.delete(0, tk.END)
+            literature_entry.delete(0, tk.END)
+            english_entry.delete(0, tk.END)
+            refresh_treeview(tree, db)
+        except ValueError:
+            messagebox.showerror("Error", "Lỗi nhập dữ liệu, vui lòng kiểm tra lại.")
 
     tk.Button(root, text="Thêm", command=on_add_click).pack()
 
